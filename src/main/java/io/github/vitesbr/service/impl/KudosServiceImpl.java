@@ -37,7 +37,7 @@ public class KudosServiceImpl implements KudosService {
 
 		Optional<User> user = this.userRepository.findById(idUserReceived);
 
-		List<KudosEntry> kudosEntryList = this.kudosEntryRepository.getByIdUserReceived(user.get().getId());
+		List<KudosEntry> kudosEntryList = this.kudosEntryRepository.findByUserReceivedOrderByDateTimeDesc(user.get());
 
 		for (KudosEntry ke : kudosEntryList) {
 			KudosEntryDTO dto = new KudosEntryDTO();
@@ -47,7 +47,7 @@ public class KudosServiceImpl implements KudosService {
 			dto.setUserReceived(ke.getUserReceived());
 			dto.setDateTime(ke.getDateTime());
 
-			List<KudosEntryDetail> kudosEntryDetailList = this.kudosEntryDetailRepository.getByIdKudosEntry(ke.getId());
+			List<KudosEntryDetail> kudosEntryDetailList = this.kudosEntryDetailRepository.findByKudosEntryOrderByPointsDesc(ke);
 
 			dto.setDetails(new ArrayList<>());
 
@@ -74,7 +74,7 @@ public class KudosServiceImpl implements KudosService {
 
 		Optional<User> userGiven = this.userRepository.findById(idUserGiven);
 		Optional<User> userReceived = this.userRepository.findById(idUserReceived);
-		List<KudosConversion> pointsConversionList = this.kudosConversionRepository.getByPointsDesc();
+		List<KudosConversion> pointsConversionList = this.kudosConversionRepository.findAllByOrderByPointsDesc();
 
 		int restPoints = points.intValue();
 		List<KudosEntryDetailDTO> entryDetailDtoList = new ArrayList<>();
