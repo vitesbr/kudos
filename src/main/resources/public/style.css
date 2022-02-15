@@ -1,0 +1,56 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	background-color: #f7f7f7;
+}
+
+fieldset {
+	top: 0px;
+}
+
+footer {
+	position: fixed;
+	background-color: #f6f6f6;
+	margin: auto;
+	bottom: 0px;
+	height: 50px;
+	width: 100%;
+}
+
+#body {
+	top: 0;
+}
+
+.lr-row {
+  margin-right: -15px;
+  margin-left: -15px;
+  width: 100%;
+   display: table;
+}
+
+.lr-row:before,
+.lr-row:after
+{
+  display: table;
+  content: " ";
+}
+.row:after {
+  clear: both;
+}
+
+.button-select-user {
+	position: relative;
+	cursor: pointer;
+	border: 2px solid #DDD;
+	margin: 10px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 6px #BBB;
+	overflow: hidden;
+	font-size: 18px;
+	font-stretch: ultra-condensed;
+	width: 30vw;
+	min-width: 150px;
+	max-width: 200px;
+	min-height: 150px;
+}
