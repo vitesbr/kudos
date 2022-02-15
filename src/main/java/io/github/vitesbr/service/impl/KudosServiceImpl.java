@@ -11,6 +11,7 @@ import io.github.vitesbr.repository.KudosEntryDetailRepository;
 import io.github.vitesbr.repository.KudosEntryRepository;
 import io.github.vitesbr.repository.UserRepository;
 import io.github.vitesbr.service.KudosService;
+import io.github.vitesbr.utils.JExtenso;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,6 +58,9 @@ public class KudosServiceImpl implements KudosService {
 				dto.addRewards(d.getReward());
 				dto.addKudos(d.getKudosConversion().getName());
 			});
+
+			JExtenso extenso = new JExtenso(dto.getRewards());
+			dto.setRewardsDescription(extenso.toString());
 
 			result.add(dto);
 		}

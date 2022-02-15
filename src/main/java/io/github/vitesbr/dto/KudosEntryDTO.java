@@ -14,6 +14,7 @@ public class KudosEntryDTO {
 	private List<KudosEntryDetailDTO> details;
 	private BigDecimal rewards;
 	private String kudos;
+	private String rewardsDescription;
 
 	public Integer getId() {
 		return this.id;
@@ -88,6 +89,14 @@ public class KudosEntryDTO {
 		this.kudos += kudos;
 	}
 
+	public String getRewardsDescription() {
+		return this.rewardsDescription;
+	}
+
+	public void setRewardsDescription(String rewardsDescription) {
+		this.rewardsDescription = rewardsDescription;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder dumpDetails = new StringBuilder("");
@@ -100,6 +109,7 @@ public class KudosEntryDTO {
 				+ "] details [" + dumpDetails.toString()
 				+ "] rewards [" + this.rewards.toString()
 				+ "] kudos [" + this.kudos
+				+ "] rewardsDescription [" + this.rewardsDescription
 				+ "]";
 	}
 
