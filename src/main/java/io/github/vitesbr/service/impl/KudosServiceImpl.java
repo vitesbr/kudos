@@ -16,12 +16,13 @@ import io.github.vitesbr.utils.JExtenso;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class KudosServiceImpl implements KudosService {
@@ -35,11 +36,14 @@ public class KudosServiceImpl implements KudosService {
 	public List<KudosEntryDTO> getKudosEntry(Integer idUserReceived) {
 		List<KudosEntryDTO> result = new ArrayList<KudosEntryDTO>();
 
-		Optional<User> user = this.userRepository.findById(idUserReceived);
+		User user = this.userRepository
+				.findById(idUserReceived)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
 
-		List<KudosEntry> kudosEntryList = this.kudosEntryRepository.findByUserReceivedOrderByDateTimeDesc(user.get());
+		List<KudosEntry> kudosEntryList = this.kudosEntryRepository.findByUserReceivedOrderByDateTimeDesc(user);
 
 		for (KudosEntry ke : kudosEntryList) {
+
 			KudosEntryDTO dto = new KudosEntryDTO();
 
 			dto.setId(ke.getId());
@@ -72,14 +76,21 @@ public class KudosServiceImpl implements KudosService {
 	@Transactional
 	public void giveKudos(Integer idUserGiven, Integer idUserReceived, Integer points) {
 
-		Optional<User> userGiven = this.userRepository.findById(idUserGiven);
-		Optional<User> userReceived = this.userRepository.findById(idUserReceived);
+		User userGiven = this.userRepository
+				.findById(idUserGiven)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));;
+
+		User userReceived = this.userRepository
+				.findById(idUserReceived)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));;
+
 		List<KudosConversion> pointsConversionList = this.kudosConversionRepository.findAllByOrderByPointsDesc();
 
 		int restPoints = points.intValue();
 		List<KudosEntryDetailDTO> entryDetailDtoList = new ArrayList<>();
 
 		for (KudosConversion kcp : pointsConversionList) {
+
 			while (restPoints >= kcp.getPoints().intValue()) {
 
 				KudosEntryDetailDTO dto = new KudosEntryDetailDTO();
@@ -96,8 +107,8 @@ public class KudosServiceImpl implements KudosService {
 		if (entryDetailDtoList.size() > 0) {
 			KudosEntry ke = new KudosEntry();
 
-			ke.setUserGiven(userGiven.get());
-			ke.setUserReceived(userReceived.get());
+			ke.setUserGiven(userGiven);
+			ke.setUserReceived(userReceived);
 			ke.setDateTime(LocalDate.now());
 
 			this.kudosEntryRepository.save(ke);
